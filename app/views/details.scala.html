@@ -1,0 +1,15 @@
+@**
+* Displays an item
+* @param item Item to display
+*@
+@(item: models.Item)
+@content(item: models.Item) = {
+    <p><a href="/items">Back</a></p>
+    <p><strong>Name: </strong>@item.name</p>
+    <p><strong>Price: </strong>@item.price match {
+        case 0 => { FREE! }
+        case price => { @price &nbsp;&euro; }
+    }</p>
+    <p><strong>Description: </strong>@item.description</p>
+}
+@layout("Item details")(content(item))

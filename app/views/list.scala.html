@@ -1,0 +1,11 @@
+@(items: Seq[models.Item])
+@layout("Items list") {
+    <a href="@controllers.routes.Items.createForm">Create Item</a>
+    <ul>
+    @for(item <- items) {
+        <li>
+            <a href="@controllers.routes.Items.details(item.id)">@item.name</a>
+        </li>
+    }
+    </ul>
+}

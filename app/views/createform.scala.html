@@ -1,0 +1,10 @@
+@(form: Form[CreateItem])(implicit messages: Messages)
+@layout("Add an item") {
+    <p><a href="/items">Back</a></p>
+    @helper.form(routes.Items.createFromForm) {
+        @helper.inputText(form("name"))
+        @helper.inputText(form("price"))
+        @helper.inputText(form("description"))
+        <button>Save</button>
+    }
+}
