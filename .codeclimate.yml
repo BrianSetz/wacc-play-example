@@ -1,0 +1,11 @@
+engines:
+  scalastyle:
+    enabled: true
+  eslint:
+    enabled: true
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+  fixme:
+    enabled: true
