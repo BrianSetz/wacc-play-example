@@ -1,5 +1,25 @@
+sudo: false
+
 language: scala
+
+cache:
+  directories:
+  - $HOME/.ivy2/cache
+  - $HOME/.sbt/boot/
+
 jdk:
-    - oraclejdk8
+- oraclejdk8
+
 scala:
-   - 2.11.7
+- 2.11.7
+
+env:
+- CODACY_PROJECT_TOKEN=8d81bc8db28142f2b5a93c5e7e493705
+
+script:
+- sbt ++$TRAVIS_SCALA_VERSION clean coverage test
+
+after_success:
+- sbt coverageReport
+- sbt coverageAggregate
+- sbt codacyCoverage
