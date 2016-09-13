@@ -1,6 +1,8 @@
 machine:
   java:
     version: oraclejdk8
+  environment:
+    CODACY_PROJECT_TOKEN: "8d81bc8db28142f2b5a93c5e7e493705"
 
 test:
   override:
