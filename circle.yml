@@ -1,0 +1,18 @@
+machine:
+  java:
+    version: oraclejdk8
+
+test:
+  override:
+  - sbt clean coverage test
+  - sbt coverageReport
+  - sbt coverageAggregate
+  - sbt codacyCoverage
+
+dependencies:
+  pre:
+  - wget -q https://dl.bintray.com/sbt/debian/sbt-0.13.11.deb
+  - sudo dpkg -i sbt-0.13.11.deb
+  cache_directories:
+  - "~/.ivy2"
+  - "~/.sbt"
