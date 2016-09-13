@@ -9,7 +9,7 @@ class ShopSpec extends Specification {
         item =>
           item.name == "Test Item" &&
           item.price == 42 &&
-          item.description == Some("Description")
+          item.description.contains("Description")
       }
     }
   }

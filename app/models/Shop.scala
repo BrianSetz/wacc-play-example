@@ -18,7 +18,7 @@ object Shop extends Shop {
   private val items = TrieMap.empty[Long, Item]
   private val seq = new AtomicLong
 
-  def list: Seq[Item] = {
+  def list(): Seq[Item] = {
     items.values.to[Seq]
   }
 
