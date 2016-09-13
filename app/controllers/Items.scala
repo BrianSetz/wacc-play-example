@@ -4,11 +4,11 @@ import models.Item
 import play.api.data._
 import play.api.data.Forms._
 import play.api.data.format.Formats._
-import play.api.mvc._
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
-import play.api.Play.current
-import play.api.i18n.Messages.Implicits._
+import play.api.mvc._
+import javax.inject.Inject
 
 case class CreateItem(name: String, price: Double, description: Option[String])
 
@@ -21,7 +21,7 @@ trait ItemsJson {
     )(CreateItem.apply _)
 }
 
-object Items extends Controller with ItemsJson {
+class Items @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport with ItemsJson {
   val shop = models.Shop
 
   val createItemFormModel = Form(mapping(
@@ -56,9 +56,6 @@ object Items extends Controller with ItemsJson {
   }
 
   def createForm = Action {
-    import play.api.Play.current
-    import play.api.i18n.Messages.Implicits._
-
     Ok(views.html.createform(createItemFormModel))
   }
 
