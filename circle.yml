@@ -4,6 +4,22 @@ machine:
   environment:
     CODACY_PROJECT_TOKEN: "8d81bc8db28142f2b5a93c5e7e493705"
 
+general:
+  artifacts:
+  - target/universal
+
+dependencies:
+  override:
+  - wget -q https://dl.bintray.com/sbt/debian/sbt-0.13.11.deb
+  - sudo dpkg -i sbt-0.13.11.deb
+  - sbt test:compile
+  cache_directories:
+  - "~/.sbt"
+  - "target/resolution-cache"
+  - "target/streams"
+  - "project/target/resolution-cache"
+  - "project/target/streams"
+
 test:
   override:
   - sbt clean coverage test
@@ -11,11 +27,3 @@ test:
   - sbt coverageReport
   - sbt coverageAggregate
   - sbt codacyCoverage
-
-dependencies:
-  override:
-  - wget -q https://dl.bintray.com/sbt/debian/sbt-0.13.11.deb
-  - sudo dpkg -i sbt-0.13.11.deb
-  cache_directories:
-  - "~/.ivy2"
-  - "~/.sbt"
