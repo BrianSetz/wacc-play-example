@@ -23,7 +23,11 @@ dependencies:
 test:
   override:
   - sbt clean coverage test
-  post:
-  - sbt coverageReport
-  - sbt coverageAggregate
-  - sbt codacyCoverage
+
+deployment:
+  all:
+    branch: *
+    commands:
+    - sbt coverageReport
+    - sbt coverageAggregate
+    - sbt codacyCoverage
