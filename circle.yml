@@ -26,7 +26,7 @@ test:
 
 deployment:
   all:
-    branch: *
+    branch: /*/
     commands:
     - sbt coverageReport
     - sbt coverageAggregate
