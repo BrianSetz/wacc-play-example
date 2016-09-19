@@ -21,3 +21,8 @@ DELETE        /items/:id           controllers.Items.delete(id: Long)
 
 GET           /items/:id/json      controllers.Items.detailsJson(id: Long)
 
+GET           /stream/randint      controllers.Stream.randomIntStream
+
+GET           /ws/index            controllers.WebSocket.index
+GET           /ws/echo             controllers.WebSocket.echo
+

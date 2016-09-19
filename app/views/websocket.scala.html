@@ -1,0 +1,34 @@
+@layout("Websocket Example") {
+    <h1>WebSocket Example</h1>
+
+    <form id="message-form" class="form-inline" action="#">
+        <input type="text" class="form-control" id="message" placeholder="Type a message"><button type="submit" class="btn btn-default">Send</button>
+    </form>
+} {
+    <script src="@routes.Assets.versioned("javascripts/jquery.simple.websocket.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "/ws/echo"});
+
+            // reconnected listening
+            webSocket.listen(function (message) {
+                console.log(" Received " + message);
+            });
+
+            function sendMessage(msg) {
+                webSocket.send(msg).done(function () {
+                    console.log(" Message \"" + msg + "\" sent successfully");
+                }).fail(function (e) {
+                    console.log(" Could not send message, " + e);
+                });
+            }
+
+            // TODO: show result in textbox
+
+            $("#message-form").submit(function (event) {
+                sendMessage($("#message").val());
+                $("#message").val("");
+            })
+        })
+    </script>
+}
