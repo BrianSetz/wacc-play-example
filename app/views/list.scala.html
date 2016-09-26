@@ -1,5 +1,5 @@
 @(items: Seq[models.Item])
-@layout("Items list") {
+@layout("Items list", "shop") {
     <a href="@controllers.routes.Items.createForm">Create Item</a>
     <ul>
     @for(item <- items) {
@@ -8,6 +8,4 @@
         </li>
     }
     </ul>
-} {
-        <!-- No Extra Scripts -->
 }

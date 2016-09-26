@@ -2,17 +2,18 @@
 * Displays an item
 * @param item Item to display
 *@
-@(item: models.Item)
+@(item: models.Item, form: Form[Item])(implicit messages: Messages)
 @content(item: models.Item) = {
-    <p><a href="/items">Back</a></p>
-    <p><strong>Name: </strong>@item.name</p>
-    <p><strong>Price: </strong>@item.price match {
-        case 0 => { FREE! }
-        case price => { @price &nbsp;&euro; }
-    }</p>
-    <p><strong>Description: </strong>@item.description</p>
+    @helper.form(routes.Items.updateFromForm) {
+        @helper.inputText(form("id"), 'readonly -> "readonly")
+        @helper.inputText(form("name"))
+        @helper.inputText(form("price"))
+        @helper.inputText(form("description"))
+        <input type="submit" value="Update" name="action">
+        <input type="submit" value="Delete" name="action">
+    }
+
+    <p><a href="../items">Back</a></p>
 }
 
-@layout("Item details")(content(item))  {
-        <!-- No Extra Scripts -->
-}
+@layout("Item details", "shop")(content(item))

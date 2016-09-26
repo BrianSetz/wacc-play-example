@@ -3,11 +3,11 @@ package controllers
 import akka.actor.{Actor, ActorRef, Props}
 import play.api.Logger
 
-object WebSocketActor {
-  def props(out: ActorRef) = Props(new WebSocketActor(out))
+object CustomWebSocketActor {
+  def props(out: ActorRef) = Props(new CustomWebSocketActor(out))
 }
 
-class WebSocketActor(out: ActorRef) extends Actor {
+class CustomWebSocketActor(out: ActorRef) extends Actor {
   Logger.info("Created WebSocket Actor")
 
   def receive = {

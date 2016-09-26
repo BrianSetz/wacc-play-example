@@ -1,7 +1,8 @@
 @(message: String)
 
-@layout("WACC Play Demo") {
-    <p><a href="/items">Go to shop</a></p>
-} {
-        <!-- No Extra Scripts -->
+@layout("WACC Play Demo", "index") {
+    <p>Message: @message</p>
+    <p><a href="/shop/items">Go to shop demo</a></p>
+    <p><a href="/ws/index">Go to websocket demo</a></p>
+    <p><a href="/items">Go to stream demo</a></p>
 }

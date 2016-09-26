@@ -15,8 +15,8 @@ trait Shop {
 }
 
 object Shop extends Shop {
-  private val items = TrieMap.empty[Long, Item]
-  private val seq = new AtomicLong
+  private val items = TrieMap.empty[Long, Item] // In memory data storage, in reality you would access a database instead
+  private val seq = new AtomicLong // Mimic auto-increment IDs
 
   def list(): Seq[Item] = {
     items.values.to[Seq]
