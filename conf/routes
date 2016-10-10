@@ -34,3 +34,8 @@ GET           /ws/complexIndex          controllers.CustomWebSocket.complexJsonI
 GET           /ws/echo                  controllers.CustomWebSocket.echo
 GET           /ws/rand                  controllers.CustomWebSocket.randomInteger
 GET           /ws/complex               controllers.CustomWebSocket.complexJson
+
+# MongoDB
+
+GET /mongo/createRandomPerson   controllers.TestController.createRandom
+GET /mongo/findAll              controllers.TestController.findAll
