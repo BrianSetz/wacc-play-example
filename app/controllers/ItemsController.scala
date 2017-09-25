@@ -4,12 +4,12 @@ import models.Item
 import play.api.data._
 import play.api.data.Forms._
 import play.api.data.format.Formats._
-import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import play.api.mvc._
 import javax.inject.Inject
 
+import play.filters.csrf._
 import play.api.Logger
 
 /**
@@ -26,19 +26,18 @@ case class CreateItem(name: String, price: Double, description: Option[String])
 trait ItemsJson {
   implicit val writesItem = Json.writes[Item]
   implicit val readsCreateItem = (
-      (__ \ "name").read(Reads.minLength[String](1)) and
+    (__ \ "name").read(Reads.minLength[String](1)) and
       (__ \ "price").read(Reads.min[Double](0)) and
       (__ \ "description").readNullable[String]
     )(CreateItem.apply _)
-
 }
 
 /**
   * The controller which handles operations for the CRUD demo
   *
-  * @param messagesApi MessagesApi is automatically injected by Play
+  * @param mcc ControllerComponents is automatically injected by Play
   */
-class Items @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport with ItemsJson {
+class ItemsController @Inject()(mcc: MessagesControllerComponents) extends MessagesAbstractController(mcc) with ItemsJson {
   val shop = models.Shop // The model representing the shop
 
   // Defines the form used for creating new items
@@ -63,7 +62,7 @@ class Items @Inject()(val messagesApi: MessagesApi) extends Controller with I18n
     * @return The resulting HTML page
     */
   def list(page: Int) = Action {
-    Ok(views.html.list(shop.list))
+    Ok(views.html.list(shop.list()))
   }
 
   /**
@@ -71,14 +70,14 @@ class Items @Inject()(val messagesApi: MessagesApi) extends Controller with I18n
     *
     * @return The result of item creation, Ok(...) upon success, BadRequest/InternalServerError when not successful
     */
-  def createFromForm = Action(parse.urlFormEncoded) { implicit request =>
+  def createFromForm = Action(parse.formUrlEncoded) { implicit request =>
     createItemFormModel.bindFromRequest().fold(
       formWithErrors => { // If there are form errors
-       BadRequest(views.html.createform(formWithErrors)) // Show errors
+        BadRequest(views.html.createform(formWithErrors)) // Show errors
       },
       createItem => { // If there were no form errors
         shop.create(createItem.name, createItem.price, createItem.description) match { // Use the shop model to create a new item
-          case Some(item) => Ok(views.html.list(shop.list))
+          case Some(item) => Ok(views.html.list(shop.list()))
           case None => InternalServerError
         }
       }
@@ -102,7 +101,7 @@ class Items @Inject()(val messagesApi: MessagesApi) extends Controller with I18n
     *
     * @return The resulting HTML page
     */
-  def createForm = Action {
+  def createForm = Action { implicit request: MessagesRequest[AnyContent] =>
     Ok(views.html.createform(createItemFormModel))
   }
 
@@ -112,7 +111,7 @@ class Items @Inject()(val messagesApi: MessagesApi) extends Controller with I18n
     * @param id Item ID to view
     * @return The updateItemFormModel with the item details upon success, NotFound when not successful
     */
-  def details(id: Long) = Action {
+  def details(id: Long) = Action { implicit request: MessagesRequest[AnyContent] =>
     shop.get(id) match { // Look for item in the shop
       case Some(item) =>
         Ok(views.html.details(item, updateItemFormModel.fill(item))) // Prefill the form with the item details
@@ -141,7 +140,7 @@ class Items @Inject()(val messagesApi: MessagesApi) extends Controller with I18n
     *
     * @return The result of item update / delete, Ok(...) upon success, BadRequest/InternalServerError when not successful
     */
-  def updateFromForm = Action(parse.urlFormEncoded) { implicit request =>
+  def updateFromForm = Action(parse.formUrlEncoded) { implicit request =>
     val postAction = request.body.get("action")
 
     Logger.info(s"[Update Form] Post action: $postAction")
@@ -186,9 +185,10 @@ class Items @Inject()(val messagesApi: MessagesApi) extends Controller with I18n
     * @return Ok(...) upon success, InternalServerError when not successful
     */
   def delete(id: Long) = Action { implicit request =>
-    shop.delete(id) match {
-      case true => Ok("deleted")
-      case false => InternalServerError
+    if (shop.delete(id)) {
+      Ok("deleted")
+    } else {
+      InternalServerError
     }
   }
 }

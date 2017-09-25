@@ -6,6 +6,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Security-Policy" content="default-src *">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <title>@title</title>
 
@@ -40,6 +41,7 @@
                                 <li class=@("active".when(tab == "ws-complex"))><a href="/ws/complexIndex?#">Complex JSON</a></li>
                             </ul>
                         </li>
+                        <li class=@("active".when(tab == "streaming"))><a href="/stream/randint">HTTP Streaming</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#">Login</a></li>

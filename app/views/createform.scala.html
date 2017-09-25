@@ -1,7 +1,8 @@
-@(form: Form[CreateItem])(implicit messages: Messages)
+@(form: Form[CreateItem])(implicit request: MessagesRequestHeader)
 @layout("Add an item", "shop") {
     <p><a href="../items">Back</a></p>
-    @helper.form(routes.Items.createFromForm) {
+    @helper.form(routes.ItemsController.createFromForm) {
+        @helper.CSRF.formField
         @helper.inputText(form("name"))
         @helper.inputText(form("price"))
         @helper.inputText(form("description"))

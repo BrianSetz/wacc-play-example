@@ -1,4 +1,5 @@
 package controllers
+
 import javax.inject.Inject
 
 import akka.actor.ActorSystem
@@ -6,7 +7,7 @@ import akka.stream.Materializer
 import akka.stream.scaladsl.Flow
 import play.api.libs.json._
 import play.api.libs.streams.ActorFlow
-import play.api.mvc.{Action, Controller, WebSocket}
+import play.api.mvc._
 
 import scala.util.Random
 
@@ -16,7 +17,7 @@ import scala.util.Random
   * @param system Implicit Akka system, injected by Play
   * @param materializer Implicit Akka materializer, injected by Play
   */
-class CustomWebSocket @Inject()(implicit system: ActorSystem, materializer: Materializer) extends Controller {
+class WebSocketController @Inject()(implicit system: ActorSystem, materializer: Materializer, cc: ControllerComponents) extends AbstractController(cc) {
 
   /**
     * A simple web socket which echo's any message that it receives.
@@ -25,7 +26,7 @@ class CustomWebSocket @Inject()(implicit system: ActorSystem, materializer: Mate
     */
   def echo = WebSocket.accept[String, String] { request =>   // WebSocket.accept[Input, Output]
     // Create a Flow based on an actor
-    ActorFlow.actorRef(out => CustomWebSocketActor.props(out)) // Akka Actor based using CustomWebSocketActor, results in a Flow[Input, Output]
+    ActorFlow.actorRef(out => WebSocketActor.props(out)) // Akka Actor based using CustomWebSocketActor, results in a Flow[Input, Output]
   }
 
   /**

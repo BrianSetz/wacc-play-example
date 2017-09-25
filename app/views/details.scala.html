@@ -2,9 +2,11 @@
 * Displays an item
 * @param item Item to display
 *@
-@(item: models.Item, form: Form[Item])(implicit messages: Messages)
+@(item: models.Item, form: Form[Item])(implicit request: MessagesRequestHeader)
+
 @content(item: models.Item) = {
-    @helper.form(routes.Items.updateFromForm) {
+    @helper.form(routes.ItemsController.updateFromForm) {
+        @helper.CSRF.formField
         @helper.inputText(form("id"), 'readonly -> "readonly")
         @helper.inputText(form("name"))
         @helper.inputText(form("price"))

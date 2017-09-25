@@ -1,36 +1,41 @@
+
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-GET           /                         controllers.Application.index
+# An example controller showing a sample home page
+GET     /                           controllers.HomeController.index
+# An example controller showing how to use dependency injection
+GET     /count                      controllers.CountController.count
+# An example controller showing how to write asynchronous code
+GET     /message                    controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file             controllers.Assets.versioned(path="/public", file: Asset)
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 # Shop
-GET           /shop/items               controllers.Items.list(page: Int ?= 1)
-POST          /shop/items               controllers.Items.createFromJson
+GET           /shop/items               controllers.ItemsController.list(page: Int ?= 1)
+POST          /shop/items               controllers.ItemsController.createFromJson
 
-GET           /shop/items/create        controllers.Items.createForm
-POST          /shop/items/create        controllers.Items.createFromForm
+GET           /shop/items/create        controllers.ItemsController.createForm
+POST          /shop/items/create        controllers.ItemsController.createFromForm
 
-GET           /shop/items/:id           controllers.Items.details(id: Long)
-POST          /shop/items/update        controllers.Items.updateFromForm
+GET           /shop/items/:id           controllers.ItemsController.details(id: Long)
+POST          /shop/items/update        controllers.ItemsController.updateFromForm
 
-PUT           /shop/items/:id           controllers.Items.update(id: Long)
-DELETE        /shop/items/:id           controllers.Items.delete(id: Long)
+PUT           /shop/items/:id           controllers.ItemsController.update(id: Long)
+DELETE        /shop/items/:id           controllers.ItemsController.delete(id: Long)
 
-GET           /shop/items/:id/json      controllers.Items.detailsJson(id: Long)
+GET           /shop/items/:id/json      controllers.ItemsController.detailsJson(id: Long)
 
 
-GET           /stream/randint           controllers.Stream.randomIntStream
+GET           /stream/randint           controllers.StreamController.randomIntStream
 
-GET           /ws/echoIndex             controllers.CustomWebSocket.echoIndex
-GET           /ws/randIndex             controllers.CustomWebSocket.randomIntegerIndex
-GET           /ws/complexIndex          controllers.CustomWebSocket.complexJsonIndex
+GET           /ws/echoIndex             controllers.WebSocketController.echoIndex
+GET           /ws/randIndex             controllers.WebSocketController.randomIntegerIndex
+GET           /ws/complexIndex          controllers.WebSocketController.complexJsonIndex
 
 # WebSocket endpoints
-GET           /ws/echo                  controllers.CustomWebSocket.echo
-GET           /ws/rand                  controllers.CustomWebSocket.randomInteger
-GET           /ws/complex               controllers.CustomWebSocket.complexJson
+GET           /ws/echo                  controllers.WebSocketController.echo
+GET           /ws/rand                  controllers.WebSocketController.randomInteger
+GET           /ws/complex               controllers.WebSocketController.complexJson
